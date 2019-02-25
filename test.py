@@ -143,11 +143,11 @@ class test(TestCase):
 			'u2':{
 				'c1': 5,
 				'c2': 7,
-				'c3': 15
+				'c3': -15
 			},
 			'u3':{
 				'c1': 10,
-				'c2': 22,
+				'c2': -22,
 				'c3': 30
 			}
 		}
@@ -161,18 +161,18 @@ class test(TestCase):
 			'u2':{
 				'c1': 5,
 				'c2': 7,
-				'c3': 10
+				'c3': -10
 			},
 			'u3':{
 				'c1': 10,
-				'c2': 10,
+				'c2': -10,
 				'c3': 10
 			}
 		}
 
 		self.template_test_method_dict(self.socialChoice.filter_preferences_maximum_voting_value, maximum_voting_value_preferences, maximum_voting_value)
 
-	def test05_filter_preferences_maximum_total_votes(self):
+	def test06_filter_preferences_maximum_total_votes(self):
 
 		maximum_total_votes_preferences = {
 			'u1':{
@@ -183,11 +183,11 @@ class test(TestCase):
 			'u2':{
 				'c1': 5,
 				'c2': 7,
-				'c3': 15
+				'c3': -15
 			},
 			'u3':{
 				'c1': 10,
-				'c2': 22,
+				'c2': -22,
 				'c3': 30
 			}
 		}
@@ -201,11 +201,11 @@ class test(TestCase):
 			'u2':{
 				'c1': 5,
 				'c2': 7,
-				'c3': 8
+				'c3': -8
 			},
 			'u3':{
 				'c1': 10,
-				'c2': 10,
+				'c2': -10,
 				'c3': 0
 			}
 		}
@@ -214,7 +214,7 @@ class test(TestCase):
 
 
 		## Greater Preferences
-	def test05_greater_preferences(self):
+	def test07_greater_preferences(self):
 
 		greater_preferences = {
 			'u1':{
@@ -237,7 +237,7 @@ class test(TestCase):
 		self.template_test_method_dict(self.socialChoice.greater_preferences, self.preferences, greater_preferences)
 
 
-	def test06_greater_preferences_multiple(self):
+	def test08_greater_preferences_multiple(self):
 		
 		greater_preferences_multiple = {
 			'u1':{
@@ -259,7 +259,7 @@ class test(TestCase):
 
 		self.template_test_method_dict(self.socialChoice.greater_preferences_multiple, self.preferences, greater_preferences_multiple)
 
-	def test07_binary_preferences(self):
+	def test09_binary_preferences(self):
 
 		binary_preferences = {
 			'u1':{
@@ -281,7 +281,7 @@ class test(TestCase):
 
 		self.template_test_method_dict(self.socialChoice.binary_preferences, self.preferences, binary_preferences)
 
-	def test08_descending_preferences(self):
+	def test10_descending_preferences(self):
 		
 		descending_preferences = {
 			'u1':{
@@ -305,7 +305,7 @@ class test(TestCase):
 
 
 
-	def test09_normalized_preferences(self):
+	def test11_normalized_preferences(self):
 
 		normalized_preferences = {
 			'u1':{
@@ -328,7 +328,7 @@ class test(TestCase):
 		self.template_test_method_dict(self.socialChoice.normalized_preferences, self.preferences, normalized_preferences)
 
 
-	def test10_plurality_voting(self):
+	def test12_plurality_voting(self):
 
 		preferences_plurality_voting = {
 			'u1':{
@@ -353,7 +353,7 @@ class test(TestCase):
 		self.template_test_method_list(self.socialChoice.plurality_voting, preferences_plurality_voting, plurality_voting)
 
 
-	def test11_borda_voting(self):
+	def test13_borda_voting(self):
 
 		preferences_borda_voting = {
 			'u1':{
@@ -377,8 +377,46 @@ class test(TestCase):
 
 		self.template_test_method_list(self.socialChoice.borda_voting, preferences_borda_voting, borda_voting)
 
+	def test14_pairwise_comparisons_voting(self):
 
-	def test12_range_voting(self):
+		preferences_pairwise_comparisons_voting = {
+			'u1':{
+				'c1': 3, #1
+				'c2': 5, #2
+				'c3': 2  #0
+			},
+			'u2':{
+				'c1': 8, #2
+				'c2': 5, #1
+				'c3': 1  #0
+			},
+			'u3':{
+				'c1': 5, #1
+				'c2': 9, #2
+				'c3': 2  #0
+			},
+			'u4':{
+				'c1': 1, #0
+				'c2': 3, #1
+				'c3': 9  #2
+			},
+			'u5':{
+				'c1': 5, #2
+				'c2': 9, #2
+				'c3': 3  #0
+			},
+			'u6':{
+				'c1': 4, #1
+				'c2': 1, #0
+				'c3': 8  #2
+			}
+		}
+		## C1-C2: 2,C1-C3: 4,C2-C3: 4,C2-C1: 4,C3-C1: 2,C3-C2: 2 -> C1:6, C2:8 ,C3:4
+		pairwise_comparisons_voting = ['c2', 'c1', 'c3']
+
+		self.template_test_method_list(self.socialChoice.pairwise_comparisons_voting, preferences_pairwise_comparisons_voting, pairwise_comparisons_voting)
+
+	def test15_range_voting(self):
 
 		preferences_range_voting = {
 			'u1':{
@@ -402,8 +440,84 @@ class test(TestCase):
 
 		self.template_test_method_list(self.socialChoice.range_voting, preferences_range_voting, range_voting)
 
+	def test16_single_transferable_vote(self):
 
-	def test13_approval_voting(self):
+		preferences_single_transferable_vote = {
+			'u1':{
+				'c1': 3, #1
+				'c2': 5, #2
+				'c3': 2  #0
+			},
+			'u2':{
+				'c1': 8, #2
+				'c2': 5, #1
+				'c3': 1  #0
+			},
+			'u3':{
+				'c1': 5, #1
+				'c2': 9, #2
+				'c3': 2  #0
+			},
+			'u4':{
+				'c1': 1, #0
+				'c2': 3, #1
+				'c3': 9  #2
+			},
+			'u5':{
+				'c1': 5, #1
+				'c2': 9, #2
+				'c3': 3  #0
+			},
+			'u6':{
+				'c1': 4, #1
+				'c2': 1, #0
+				'c3': 8  #2
+			}
+		}
+		
+		## C2,C1,C2,C3,C2,C3 -> C3:2, C1:1, C2:3
+		## C2,C2,C2,C3,C2,C3 -> C2:4, C3:2 --> C2, C3
+
+		single_transferable_vote = ['c2', 'c3']
+
+		self.template_test_method_list(self.socialChoice.single_transferable_vote, preferences_single_transferable_vote, single_transferable_vote)
+	
+	def test17_exchange_of_weight_voting(self):
+
+		preferences_exchange_of_weight_voting = {
+			'u1':{
+				'c1': 3, #1
+				'c2': 5, #2
+				'c3': 2  #0
+			},
+			'u2':{
+				'c1': 8, #2
+				'c2': 5, #1
+				'c3': 1  #0
+			},
+			'u3':{
+				'c1': 5, #1
+				'c2': 9, #2
+				'c3': 2  #0
+			}
+		}
+		
+		## C2,C1,C2,C3,C2,C3 -> C3:2, C1:1, C2:3
+		## C2,C2,C2,C3,C2,C3 -> C2:4, C3:2 --> C2, C3
+
+		exchange_of_weight_voting_step1 = ['c2', 'c1', 'c3']
+
+		exchange_of_weight_voting_step2 = ['c1', 'c3']
+
+		exchange_of_weight_voting_step3 = ['c2', 'c1', 'c3']
+
+
+		self.template_test_method_list(self.socialChoice.exchange_of_weight_voting, preferences_exchange_of_weight_voting, exchange_of_weight_voting_step1)
+		self.template_test_method_list(self.socialChoice.exchange_of_weight_voting, preferences_exchange_of_weight_voting, exchange_of_weight_voting_step2)
+		self.template_test_method_list(self.socialChoice.exchange_of_weight_voting, preferences_exchange_of_weight_voting, exchange_of_weight_voting_step3)
+
+
+	def test18_approval_voting(self):
 
 		preferences_approval_voting = {
 			'u1':{
@@ -428,7 +542,7 @@ class test(TestCase):
 		self.template_test_method_list(self.socialChoice.approval_voting, preferences_approval_voting, approval_voting)
 
 
-	def test14_cumulative_voting(self):
+	def test19_cumulative_voting(self):
 
 		preferences_cumulative_voting = {
 			'u1':{
@@ -452,7 +566,7 @@ class test(TestCase):
 
 		self.template_test_method_list(self.socialChoice.cumulative_voting, preferences_cumulative_voting, cumulative_voting)
 
-	def test15_service_users_satisfaction(self):
+	def test20_service_users_satisfaction(self):
 
 		preferences_service_users_satisfaction = {
 			'u1':{
@@ -484,7 +598,7 @@ class test(TestCase):
 		self.template_test_method_dict(self.socialChoice.service_users_satisfaction, [preferences_service_users_satisfaction, winner], service_users_satisfaction)
 
 
-	def test16_total_service_satisfaction(self):
+	def test21_total_service_satisfaction(self):
 
 		configuration_users_satisfaction = {
 			'u1': 7,
@@ -497,7 +611,7 @@ class test(TestCase):
 		self.template_test_method_int(self.socialChoice.total_service_satisfaction, configuration_users_satisfaction, total_service_satisfaction)
 
 
-	def test17_average_service_satisfaction(self):
+	def test22_average_service_satisfaction(self):
 
 		configuration_users_satisfaction = {
 			'u1': 7,
@@ -510,7 +624,7 @@ class test(TestCase):
 		self.template_test_method_int(self.socialChoice.average_service_satisfaction, configuration_users_satisfaction, average_service_satisfaction)
 
 
-	def test18_normalized_service_satisfaction(self):
+	def test23_normalized_service_satisfaction(self):
 
 		configuration_users_satisfaction = {
 			'u1': 7,
@@ -523,8 +637,8 @@ class test(TestCase):
 		self.template_test_method_int(self.socialChoice.normalized_service_satisfaction, configuration_users_satisfaction, normalized_service_satisfaction)
 
 
-
-	def test19_services_winning_configurations(self):
+'''
+	def test24_services_winning_configurations(self):
 
 		services = {
 	        's1':{
@@ -580,19 +694,7 @@ class test(TestCase):
 		self.template_test_method_dict(self.socialChoice.services_winning_configurations, [services, 'range_voting'], services_winning_configurations_range_voting)
 		self.template_test_method_dict(self.socialChoice.services_winning_configurations, [services, 'approval_voting'], services_winning_configurations_approval_voting)
 		self.template_test_method_dict(self.socialChoice.services_winning_configurations, [services, 'cumulative_voting'], services_winning_configurations_cumulative_voting)
-
-
-	def test20_total_global_services_satisfaction(self):
-
-		configuration_users_satisfaction = {
-			'u1': 7,
-			'u2': 8,
-			'u3': 2
-		}
-
-		total_global_services_satisfaction = ((8+7+2)/3)/10
-
-		self.template_test_method_int(self.socialChoice.total_global_services_satisfaction, configuration_users_satisfaction, normalized_service_satisfaction)
+'''
 
 if __name__ == '__main__':
 	unittest.TestLoader.sortTestMethodsUsing = None
