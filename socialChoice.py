@@ -1,6 +1,3 @@
-from unittest import TestCase
-import unittest
-from pyunitreport import HTMLTestRunner
 import json
 from copy import deepcopy
 import itertools
@@ -517,6 +514,23 @@ class SocialChoice:
 		return self.step_record
 
 
+	def social_choice(self, method, preferences):
+		
+		methods = {
+		'borda-voting': 'borda_voting', 
+		'pairwise-comparisons-voting': 'pairwise_comparisons_voting', 
+		'plurality-voting-votes': 'plurality_voting_votes', 
+		'plurality-voting': 'plurality_voting', 
+		'approval-voting': 'approval_voting', 
+		'single-transferable-vote': 'single_transferable_vote', 
+		'range-voting-votes': 'range_voting_votes', 
+		'range-voting': 'range_voting', 
+		'exchange-of-weight-voting': 'exchange_of_weight_voting', 
+		'cumulative-voting': 'cumulative_voting', 
+		}
+
+		return eval('self.' + methods[method] + '(preferences)')
+
 
 
 
@@ -571,6 +585,9 @@ if __name__ == '__main__':
 
 	sc = SocialChoice()
 
+	sc.social_choice('borda-voting', services['s1'])
+
+	'''
 	methods = {'s1':'plurality_voting', 's2':'plurality_voting'}
 
 	#methods = 'plurality_voting'
@@ -579,3 +596,4 @@ if __name__ == '__main__':
 
    
 	print(json.dumps(result, sort_keys=True, indent=4))
+	'''
